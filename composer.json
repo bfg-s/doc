@@ -1,0 +1,56 @@
+{
+    "name": "bfg/doc",
+    "description": "Php doc block generator",
+    "keywords": [
+        "laravel",
+        "doc",
+        "block"
+    ],
+    "homepage": "https://github.com/bfg/livevue",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "bfg",
+            "email": "bfg.script@gmail.com"
+        }
+    ],
+    "require": {
+        "php": "^8.0",
+        "illuminate/contracts": "^8.0",
+        "bfg/entity": "^1.1.5"
+    },
+    "require-dev": {
+
+    },
+    "autoload": {
+        "psr-4": {
+            "Bfg\\Doc\\": "src"
+        },
+        "files": [
+            "helpers.php"
+        ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+
+        }
+    },
+    "scripts": {
+
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Bfg\\Doc\\ServiceProvider"
+            ],
+            "aliases": {
+                "Doc": "Bfg\\Doc\\Facade"
+            }
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}

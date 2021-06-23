@@ -1,0 +1,1 @@
+<?phpreturn [    'help_file' => base_path('_bfg_ide_helpers.php')];
