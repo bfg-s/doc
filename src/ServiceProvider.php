@@ -2,44 +2,37 @@
 
 namespace Bfg\Doc;
 
-use Bfg\Dev\Commands\DumpAutoload;
 use Bfg\Doc\Commands\MakeDocsCommand;
 use Bfg\Doc\Core\DataForGenerate;
 use Bfg\Doc\Core\Listeners\UpdateClassDoc;
 use Bfg\Doc\Core\Listeners\UpdateClassHelpers;
-use Illuminate\Support\ServiceProvider as IlluminateServiceProvider;
+use Bfg\Installer\Processor\DumpAutoloadProcessor;
+use Bfg\Installer\Providers\InstalledProvider;
 
 /**
  * Class ServiceProvider
  * @package Bfg\Doc
  */
-class ServiceProvider extends IlluminateServiceProvider
+class ServiceProvider extends InstalledProvider
 {
     /**
-     * Bootstrap services.
-     * @return void
+     * The description of extension.
+     * @var string|null
      */
-    public function boot()
-    {
-        $this->commands([
-            MakeDocsCommand::class
-        ]);
-
-        \Event::listen(DataForGenerate::class, UpdateClassDoc::class);
-
-        \Event::listen(DataForGenerate::class, UpdateClassHelpers::class);
-
-        if (class_exists(DumpAutoload::class)) {
-
-            DumpAutoload::addToExecute(Discover::class);
-        }
-    }
+    public ?string $description = "Auto docks for classes";
 
     /**
-     * Register route settings
+     * Set as installed by default.
+     * @var bool
+     */
+    public bool $installed = true;
+
+    /**
+     * Executed when the provider is registered
+     * and the extension is installed.
      * @return void
      */
-    public function register()
+    function installed(): void
     {
         /**
          * Merge config from having by default
@@ -54,5 +47,30 @@ class ServiceProvider extends IlluminateServiceProvider
         $this->publishes([
             __DIR__.'/../config/doc.php' => config_path('doc.php'),
         ], 'bfg-doc');
+    }
+
+    /**
+     * Executed when the provider run method
+     * "boot" and the extension is installed.
+     * @return void
+     */
+    function run(): void
+    {
+        $this->commands([
+            MakeDocsCommand::class
+        ]);
+
+        \Event::listen(DataForGenerate::class, UpdateClassDoc::class);
+
+        \Event::listen(DataForGenerate::class, UpdateClassHelpers::class);
+    }
+
+    /**
+     * Run on dump extension.
+     * @param  DumpAutoloadProcessor  $processor
+     */
+    public function dump(DumpAutoloadProcessor $processor)
+    {
+        \Doc::generate();
     }
 }

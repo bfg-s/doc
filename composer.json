@@ -6,7 +6,7 @@
         "doc",
         "block"
     ],
-    "homepage": "https://github.com/bfg/livevue",
+    "homepage": "https://github.com/bfg/doc",
     "license": "MIT",
     "authors": [
         {
@@ -17,7 +17,9 @@
     "require": {
         "php": "^8.0",
         "illuminate/contracts": "^8.0",
-        "bfg/entity": "^1.1.5"
+        "bfg/text": "*",
+        "bfg/entity": "^1.1.5",
+        "bfg/installer": "*"
     },
     "require-dev": {
 
