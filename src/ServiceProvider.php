@@ -16,12 +16,6 @@ use Bfg\Installer\Providers\InstalledProvider;
 class ServiceProvider extends InstalledProvider
 {
     /**
-     * The description of extension.
-     * @var string|null
-     */
-    public ?string $description = "Auto docks for classes";
-
-    /**
      * Set as installed by default.
      * @var bool
      */
@@ -71,6 +65,8 @@ class ServiceProvider extends InstalledProvider
      */
     public function dump(DumpAutoloadProcessor $processor)
     {
+        parent::dump($processor);
+
         \Doc::generate();
     }
 }
