@@ -6,27 +6,19 @@ use Bfg\Doc\Commands\MakeDocsCommand;
 use Bfg\Doc\Core\DataForGenerate;
 use Bfg\Doc\Core\Listeners\UpdateClassDoc;
 use Bfg\Doc\Core\Listeners\UpdateClassHelpers;
-use Bfg\Installer\Processor\DumpAutoloadProcessor;
-use Bfg\Installer\Providers\InstalledProvider;
+use Illuminate\Support\ServiceProvider as IlluminateServiceProvider;
 
 /**
  * Class ServiceProvider
  * @package Bfg\Doc
  */
-class ServiceProvider extends InstalledProvider
+class ServiceProvider extends IlluminateServiceProvider
 {
     /**
-     * Set as installed by default.
-     * @var bool
-     */
-    public bool $installed = true;
-
-    /**
-     * Executed when the provider is registered
-     * and the extension is installed.
+     * Register route settings.
      * @return void
      */
-    function installed(): void
+    public function register(): void
     {
         /**
          * Merge config from having by default
@@ -44,11 +36,10 @@ class ServiceProvider extends InstalledProvider
     }
 
     /**
-     * Executed when the provider run method
-     * "boot" and the extension is installed.
+     * Bootstrap services.
      * @return void
      */
-    function run(): void
+    public function boot(): void
     {
         $this->commands([
             MakeDocsCommand::class
@@ -57,16 +48,5 @@ class ServiceProvider extends InstalledProvider
         \Event::listen(DataForGenerate::class, UpdateClassDoc::class);
 
         \Event::listen(DataForGenerate::class, UpdateClassHelpers::class);
-    }
-
-    /**
-     * Run on dump extension.
-     * @param  DumpAutoloadProcessor  $processor
-     */
-    public function dump(DumpAutoloadProcessor $processor)
-    {
-        parent::dump($processor);
-
-        \Doc::generate();
     }
 }
